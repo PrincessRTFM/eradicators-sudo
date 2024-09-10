@@ -125,8 +125,8 @@ local function env_has(key)
   -- local SP,PM = SUDO__IS_PLATINUM, is_platinum_member(game.player)
   -- if NN and ( (not IP) or (SP or PM) ) then return true end
   --v2: limited evaluation
-  if (env[key] ~= nil) and (
-   (not plat[name])
+  if (this ~= nil) and (
+   (not plat[key])
     or SUDO__IS_PLATINUM 
     or is_platinum_member(game.player)
     ) then return true end
