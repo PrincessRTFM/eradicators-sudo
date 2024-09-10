@@ -129,7 +129,7 @@ local function env_has(key)
    (not plat[key])
     or SUDO__IS_PLATINUM 
     or is_platinum_member(game.player)
-    ) then return true end
+    ) then return true, this end
   end
 
 --intercept calls to existing __index method (if any)
@@ -142,16 +142,19 @@ local meta = debug.getmetatable(_ENV) or {}; debug.setmetatable(_ENV,meta)
 local idx = meta.__index
 if idx == nil then --host has no __index method
   meta.__index = function(self,key)
-    if env_has(key) then return env[key] end
+    local has, val = env_has(key)
+    if has then return val end
     end
 elseif type(idx) == 'table' then --host has reference table
   meta.__index = function(self,key)
-    if env_has(key) then return env[key] end
+    local has, val = env_has(key)
+    if has then return val end
     return idx[key]
     end
 elseif type(idx) == 'function' then --host has custom function
   meta.__index = function(self,key)
-    if env_has(key) then return env[key] end
+    local has, val = env_has(key)
+    if has then return val end
     return idx(self,key)
     end
 else
